@@ -1,0 +1,73 @@
+<?xml version="1.0" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="1000" height="733.333" viewBox="0 0 1000 733.333">
+
+  <rect x="0" y="0" width="1000" height="733.333" fill="none" stroke="black" stroke-width="1" />
+
+  <rect x="166.667" y="120" width="220" height="86.6667" fill="#ffcccc" stroke="black" stroke-width="0.5" />
+  <text x="276.667" y="163.333" font-family="sans-serif" font-size="24.4444" fill="black" text-anchor="middle" dominant-baseline="middle">hb0</text>
+  <rect x="0" y="340" width="86.6667" height="193.333" fill="#ccffcc" stroke="black" stroke-width="0.5" />
+  <text x="43.3333" y="436.667" font-family="sans-serif" font-size="24.4444" fill="black" text-anchor="middle" dominant-baseline="middle">hb1</text>
+  <rect x="446.667" y="386.667" width="206.667" height="86.6667" fill="#ccccff" stroke="black" stroke-width="0.5" />
+  <text x="550" y="430" font-family="sans-serif" font-size="24.4444" fill="black" text-anchor="middle" dominant-baseline="middle">hb2</text>
+  <rect x="180" y="300" width="373.333" height="86.6667" fill="#ffe0b3" stroke="black" stroke-width="0.5" />
+  <text x="366.667" y="343.333" font-family="sans-serif" font-size="24.4444" fill="black" text-anchor="middle" dominant-baseline="middle">hb3</text>
+  <rect x="553.333" y="300" width="93.3333" height="86.6667" fill="#e0ccff" stroke="black" stroke-width="0.5" />
+  <text x="600" y="343.333" font-family="sans-serif" font-size="24.4444" fill="black" text-anchor="middle" dominant-baseline="middle">hb4</text>
+  <rect x="300" y="400" width="86.6667" height="113.333" fill="#ccffff" stroke="black" stroke-width="0.5" />
+  <text x="343.333" y="456.667" font-family="sans-serif" font-size="24.4444" fill="black" text-anchor="middle" dominant-baseline="middle">hb5</text>
+  <rect x="0" y="533.333" width="153.333" height="86.6667" fill="#ffcccc" stroke="black" stroke-width="0.5" />
+  <text x="76.6667" y="576.667" font-family="sans-serif" font-size="24.4444" fill="black" text-anchor="middle" dominant-baseline="middle">hb6</text>
+  <rect x="420" y="473.333" width="206.667" height="86.6667" fill="#ccffcc" stroke="black" stroke-width="0.5" />
+  <text x="523.333" y="516.667" font-family="sans-serif" font-size="24.4444" fill="black" text-anchor="middle" dominant-baseline="middle">hb7</text>
+  <rect x="93.3333" y="-6.63173e-13" width="653.333" height="120" fill="#ccccff" stroke="black" stroke-width="0.5" />
+  <text x="420" y="60" font-family="sans-serif" font-size="24.4444" fill="black" text-anchor="middle" dominant-baseline="middle">hb8</text>
+  <rect x="513.333" y="160" width="140" height="140" fill="#ffe0b3" stroke="black" stroke-width="0.5" />
+  <text x="583.333" y="230" font-family="sans-serif" font-size="24.4444" fill="black" text-anchor="middle" dominant-baseline="middle">hb9</text>
+  <rect x="786.667" y="486.667" width="80" height="246.667" fill="#e0ccff" stroke="black" stroke-width="0.5" />
+  <text x="826.667" y="610" font-family="sans-serif" font-size="24.4444" fill="black" text-anchor="middle" dominant-baseline="middle">hb10</text>
+  <rect x="386.667" y="120" width="120" height="73.3333" fill="#ccffff" stroke="black" stroke-width="0.5" />
+  <text x="446.667" y="156.667" font-family="sans-serif" font-size="24.4444" fill="black" text-anchor="middle" dominant-baseline="middle">hb11</text>
+  <rect x="86.6667" y="460" width="73.3333" height="73.3333" fill="#ffcccc" stroke="black" stroke-width="0.5" />
+  <text x="123.333" y="496.667" font-family="sans-serif" font-size="24.4444" fill="black" text-anchor="middle" dominant-baseline="middle">hb12</text>
+  <rect x="926.667" y="380" width="73.3333" height="233.333" fill="#ccffcc" stroke="black" stroke-width="0.5" />
+  <text x="963.333" y="496.667" font-family="sans-serif" font-size="24.4444" fill="black" text-anchor="middle" dominant-baseline="middle">hb13</text>
+  <rect x="153.333" y="586.667" width="560" height="73.3333" fill="#ccccff" stroke="black" stroke-width="0.5" />
+  <text x="433.333" y="623.333" font-family="sans-serif" font-size="24.4444" fill="black" text-anchor="middle" dominant-baseline="middle">hb14</text>
+  <rect x="753.333" y="-6.63173e-13" width="246.667" height="73.3333" fill="#ffe0b3" stroke="black" stroke-width="0.5" />
+  <text x="876.667" y="36.6667" font-family="sans-serif" font-size="24.4444" fill="black" text-anchor="middle" dominant-baseline="middle">hb15</text>
+  <rect x="200" y="206.667" width="106.667" height="93.3333" fill="#e0ccff" stroke="black" stroke-width="0.5" />
+  <text x="253.333" y="253.333" font-family="sans-serif" font-size="24.4444" fill="black" text-anchor="middle" dominant-baseline="middle">hb16</text>
+  <rect x="93.3333" y="126.667" width="73.3333" height="326.667" fill="#ccffff" stroke="black" stroke-width="0.5" />
+  <text x="130" y="290" font-family="sans-serif" font-size="24.4444" fill="black" text-anchor="middle" dominant-baseline="middle">hb17</text>
+  <rect x="13.3333" y="620" width="73.3333" height="113.333" fill="#ffcccc" stroke="black" stroke-width="0.5" />
+  <text x="50" y="676.667" font-family="sans-serif" font-size="24.4444" fill="black" text-anchor="middle" dominant-baseline="middle">hb18</text>
+  <rect x="0" y="-1.89478e-13" width="93.3333" height="266.667" fill="#ccffcc" stroke="black" stroke-width="0.5" />
+  <text x="46.6667" y="133.333" font-family="sans-serif" font-size="24.4444" fill="black" text-anchor="middle" dominant-baseline="middle">hb19</text>
+  <rect x="653.333" y="233.333" width="93.3333" height="326.667" fill="#ccccff" stroke="black" stroke-width="0.5" />
+  <text x="700" y="396.667" font-family="sans-serif" font-size="24.4444" fill="black" text-anchor="middle" dominant-baseline="middle">hb20</text>
+  <rect x="293.333" y="513.333" width="126.667" height="73.3333" fill="#ffe0b3" stroke="black" stroke-width="0.5" />
+  <text x="356.667" y="550" font-family="sans-serif" font-size="24.4444" fill="black" text-anchor="middle" dominant-baseline="middle">hb21</text>
+  <rect x="806.667" y="73.3333" width="193.333" height="73.3333" fill="#e0ccff" stroke="black" stroke-width="0.5" />
+  <text x="903.333" y="110" font-family="sans-serif" font-size="24.4444" fill="black" text-anchor="middle" dominant-baseline="middle">hb22</text>
+  <rect x="166.667" y="393.333" width="106.667" height="73.3333" fill="#ccffff" stroke="black" stroke-width="0.5" />
+  <text x="220" y="430" font-family="sans-serif" font-size="24.4444" fill="black" text-anchor="middle" dominant-baseline="middle">hb23</text>
+  <rect x="713.333" y="560" width="73.3333" height="173.333" fill="#ffcccc" stroke="black" stroke-width="0.5" />
+  <text x="750" y="646.667" font-family="sans-serif" font-size="24.4444" fill="black" text-anchor="middle" dominant-baseline="middle">hb24</text>
+  <rect x="660" y="160" width="220" height="73.3333" fill="#ccffcc" stroke="black" stroke-width="0.5" />
+  <text x="770" y="196.667" font-family="sans-serif" font-size="24.4444" fill="black" text-anchor="middle" dominant-baseline="middle">hb25</text>
+  <rect x="13.3333" y="266.667" width="80" height="73.3333" fill="#ccccff" stroke="black" stroke-width="0.5" />
+  <text x="53.3333" y="303.333" font-family="sans-serif" font-size="24.4444" fill="black" text-anchor="middle" dominant-baseline="middle">hb26</text>
+  <rect x="746.667" y="233.333" width="120" height="246.667" fill="#ffe0b3" stroke="black" stroke-width="0.5" />
+  <text x="806.667" y="356.667" font-family="sans-serif" font-size="24.4444" fill="black" text-anchor="middle" dominant-baseline="middle">hb27</text>
+  <rect x="160" y="466.667" width="133.333" height="120" fill="#e0ccff" stroke="black" stroke-width="0.5" />
+  <text x="226.667" y="526.667" font-family="sans-serif" font-size="24.4444" fill="black" text-anchor="middle" dominant-baseline="middle">hb28</text>
+  <rect x="866.667" y="613.333" width="133.333" height="120" fill="#ccffff" stroke="black" stroke-width="0.5" />
+  <text x="933.333" y="673.333" font-family="sans-serif" font-size="24.4444" fill="black" text-anchor="middle" dominant-baseline="middle">hb29</text>
+  <rect x="153.333" y="660" width="560" height="73.3333" fill="#ffcccc" stroke="black" stroke-width="0.5" />
+  <text x="433.333" y="696.667" font-family="sans-serif" font-size="24.4444" fill="black" text-anchor="middle" dominant-baseline="middle">hb30</text>
+  <rect x="880" y="146.667" width="120" height="233.333" fill="#ccffcc" stroke="black" stroke-width="0.5" />
+  <text x="940" y="263.333" font-family="sans-serif" font-size="24.4444" fill="black" text-anchor="middle" dominant-baseline="middle">hb31</text>
+  <rect x="306.667" y="206.667" width="206.667" height="93.3333" fill="#ccccff" stroke="black" stroke-width="0.5" />
+  <text x="410" y="253.333" font-family="sans-serif" font-size="24.4444" fill="black" text-anchor="middle" dominant-baseline="middle">hb32</text>
+
+</svg>

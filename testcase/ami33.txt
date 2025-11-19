@@ -1,0 +1,36 @@
+num_of_hardblocks 33
+
+// name w h
+hbk1   413 220
+hbk2   112 321
+hbk3   214 222
+hbk4   511 323
+hbk5a  215 324
+hbk5b  517 325
+hbk5c  118 226
+hbk6   219 427
+hbk7   211 528
+hbk8a  312 229
+hbk8b  213 420
+hbk9a  114 321
+hbk9b  215 222
+hbk9c  316 323
+hbk9d  417 424
+hbk10a 518 525
+hbk10b 219 326
+hbk10c 410 227
+hbk11  111 328
+hbk12  212 229
+hbk13  513 320
+hbk14a 214 321
+hbk14b 515 322
+hbk14c 116 223
+hbk15a 217 424
+hbk15b 218 525
+hbk16  319 226
+hbk17a 210 427
+hbk17b 113 328
+hbk18  213 229
+hbk19  313 324
+hbk20  413 424
+hbk21  513 524

@@ -1,0 +1,6 @@
+num_of_hardblocks 3
+
+// name w h
+hb0 8 6
+hb1 8 5
+hb2 11 2
