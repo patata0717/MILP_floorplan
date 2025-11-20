@@ -20,7 +20,6 @@ struct HardBlock {
     {}
 };
 
-
 class Pad {
 public:
     Pad() : id(-1), x(0), y(0) {};

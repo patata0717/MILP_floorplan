@@ -1,6 +1,6 @@
 num_of_hardblocks 3
 num_of_nets 1
-num_of_pad 4
+num_of_pads 4
 
 // hardblocks
 // name w h

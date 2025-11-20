@@ -11631,3 +11631,38 @@ Best objective 4.787999999521e+03, best bound 1.736000000000e+03, gap 63.7427%
 
 Wrote result file '../visualize/ami49.sol'
 
+
+Gurobi 12.0.3 (linux64, gurobi_cl) logging started Thu Nov 20 14:53:00 2025
+
+Set parameter Username
+Set parameter LicenseID to value 2724816
+Set parameter LogFile to value "gurobi.log"
+Using license file /opt/gurobi/gurobi.lic
+
+Gurobi 12.0.3 (linux64, gurobi_cl) logging started Thu Nov 20 14:53:21 2025
+
+Set parameter Username
+Set parameter LicenseID to value 2724816
+Set parameter LogFile to value "gurobi.log"
+Using license file /opt/gurobi/gurobi.lic
+
+Gurobi 12.0.3 (linux64, gurobi_cl) logging started Thu Nov 20 14:54:41 2025
+
+Set parameter Username
+Set parameter LicenseID to value 2724816
+Set parameter LogFile to value "gurobi.log"
+Using license file /opt/gurobi/gurobi.lic
+
+Gurobi 12.0.3 (linux64, gurobi_cl) logging started Thu Nov 20 14:56:38 2025
+
+Set parameter Username
+Set parameter LicenseID to value 2724816
+Set parameter LogFile to value "gurobi.log"
+Using license file /opt/gurobi/gurobi.lic
+
+Gurobi 12.0.3 (linux64, gurobi_cl) logging started Thu Nov 20 14:57:01 2025
+
+Set parameter Username
+Set parameter LicenseID to value 2724816
+Set parameter LogFile to value "gurobi.log"
+Using license file /opt/gurobi/gurobi.lic

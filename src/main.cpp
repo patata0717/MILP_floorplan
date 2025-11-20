@@ -10,17 +10,26 @@
 #include <cmath>
 #include <random>
 #include <algorithm>
+#include <cctype>   // for std::isdigit
 #include "datastructure.hpp"
+
 #define EQ 0
 #define GE 1
 #define LE 2
+
 using namespace std;
 
-// output: matrix, core util
+// -------------------------
+// Helper structs for HPWL
+// -------------------------
+struct NetHPWL {
+    std::string name;
+    std::vector<int> block_ids; // indices into hardblocks array
+    std::vector<int> pad_ids;   // pad indices 0..num_of_pads-1
+};
 
 double GetTime(void) {
     struct timeval tv;
-
     gettimeofday(&tv, NULL);
     return tv.tv_sec + tv.tv_usec * 1e-6;
 }
@@ -31,9 +40,22 @@ static int pairIndex(int i, int j, int N) {
     return i * (2 * N - i - 1) / 2 + (j - i - 1);
 }
 
-// input: hardblocks[0..N-1] with (w_i, h_i)
-// output: matrix with 2N^2 rows and ( (N+1)^2 + 1 ) columns:
-//         variables (x,y,r,p,q, global y), OP, RHS
+// extract numeric part from a string like "net5" -> 5
+static int extractNetId(const std::string& name) {
+    std::string digits;
+    for (char c : name) {
+        if (std::isdigit(static_cast<unsigned char>(c))) {
+            digits.push_back(c);
+        }
+    }
+    if (!digits.empty()) return std::stoi(digits);
+    return -1; // fallback
+}
+
+// -------------------------------------------------------
+// Sutanthavibul: dimension + non-overlap -> matrix
+// (unchanged from your original code)
+// -------------------------------------------------------
 void Sutanthavibul(HardBlock* hardblocks, int N, int W, vector<vector<int>>& matrix) {
     int numPermu = N * (N - 1) / 2;
 
@@ -50,7 +72,7 @@ void Sutanthavibul(HardBlock* hardblocks, int N, int W, vector<vector<int>>& mat
     auto idx_y = [N](int i) { return N + i; };                 // y_i
     auto idx_r = [N](int i) { return 2 * N + i; };             // r_i
 
-    auto idx_p = [N, numPermu](int i, int j) {
+    auto idx_p = [N](int i, int j) {
         return 3 * N + pairIndex(i, j, N);                     // p_ij
     };
     auto idx_q = [N, numPermu](int i, int j) {
@@ -161,7 +183,7 @@ void Sutanthavibul(HardBlock* hardblocks, int N, int W, vector<vector<int>>& mat
             ++row;
 
             // (6) y_i - r_j w_j - (1-r_j) h_j >= y_j - M(2 - p_ij - q_ij)
-            //     -> y_i - y_j + r_j(h_j - w_j) - M p_ij - M q_ij >= -2M + h_j
+            //     -> y_i - y_j + r_j(h_j - w_j) - M p_ij - M q_ij >= -2M + hj
             matrix[row][c_yi] =  1;
             matrix[row][c_yj] = -1;
             matrix[row][c_rj] =  hj - wj;
@@ -174,10 +196,21 @@ void Sutanthavibul(HardBlock* hardblocks, int N, int W, vector<vector<int>>& mat
     }
 }
 
-void ConvertMatrixToLPFILE(vector<vector<int>>& matrix, string output_filepath) {
+// -------------------------------------------------------
+// Convert matrix + HPWL (blocks + pads) into LP file
+// -------------------------------------------------------
+void ConvertMatrixToLPFILE(vector<vector<int>>& matrix,
+                           const std::string& output_filepath,
+                           HardBlock* hardblocks,
+                           int num_of_hardblocks,
+                           const std::vector<NetHPWL>& nets_hpwl,
+                           int dieWidth) {
     ofstream output_file(output_filepath);
     if (!output_file) return;
-    if (matrix.empty()) { output_file.close(); return; }
+    if (matrix.empty()) {
+        output_file.close();
+        return;
+    }
 
     int numRows = (int)matrix.size();
     int numCols = (int)matrix[0].size();
@@ -186,15 +219,20 @@ void ConvertMatrixToLPFILE(vector<vector<int>>& matrix, string output_filepath) 
     int OPcol  = numCols - 2;
     int ycol   = numCols - 3; // global y
 
-    // deduce N from #constraints: 2N^2 = numRows
+    // deduce N from #constraints: 2N^2 = numRows (still true; HPWL added separately)
     int N = (int)std::lround(std::sqrt(numRows / 2.0));
     int numPermu = N * (N - 1) / 2;
+
+    if (N != num_of_hardblocks) {
+        std::cerr << "Warning: deduced N = " << N
+                  << " but num_of_hardblocks = " << num_of_hardblocks << "\n";
+    }
 
     auto idx_x = [N](int i) { return i; };
     auto idx_y = [N](int i) { return N + i; };
     auto idx_r = [N](int i) { return 2 * N + i; };
 
-    auto idx_p = [N, numPermu](int i, int j) {
+    auto idx_p = [N](int i, int j) {
         return 3 * N + pairIndex(i, j, N);
     };
     auto idx_q = [N, numPermu](int i, int j) {
@@ -223,11 +261,22 @@ void ConvertMatrixToLPFILE(vector<vector<int>>& matrix, string output_filepath) 
 
     // ---------- Minimize ----------
     output_file << "Minimize\n";
-    output_file << "  y\n";
+    output_file << "  20 y";
+
+    // Add Σ_n (max_nx - min_nx + max_ny - min_ny)
+    for (const auto& net : nets_hpwl) {
+        int netId = extractNetId(net.name);
+        output_file << " + max_n" << netId << "x"
+                    << " - min_n" << netId << "x"
+                    << " + max_n" << netId << "y"
+                    << " - min_n" << netId << "y";
+    }
+    output_file << "\n";
 
     // ---------- Subject To ----------
     output_file << "Subject To\n";
 
+    // 1) Existing Sutanthavibul constraints from matrix
     for (int r = 0; r < numRows; ++r) {
         output_file << "  c" << (r + 1) << ": ";
 
@@ -268,6 +317,116 @@ void ConvertMatrixToLPFILE(vector<vector<int>>& matrix, string output_filepath) 
         output_file << matrix[r][RHScol] << "\n";
     }
 
+    // 2) HPWL constraints: for each net, for each pin (HB or pad)
+    int cid = numRows + 1;
+
+    double W      = static_cast<double>(dieWidth);
+    double W_mid  = std::floor(W / 2.0); // floor(W/2), as requested
+
+    for (const auto& net : nets_hpwl) {
+        int netId = extractNetId(net.name);
+
+        // ----- HardBlock pins -----
+        for (int bid : net.block_ids) {
+            if (bid < 0 || bid >= num_of_hardblocks) continue;
+            const HardBlock& hb = hardblocks[bid];
+            int i = hb.id; // assumed 0-based same as bid
+
+            int w = get<0>(hb.block);
+            int h = get<1>(hb.block);
+            int dx = w / 2; // floor(w/2)
+            int dy = h / 2; // floor(h/2)
+
+            int x_idx = i + 1;
+            int y_idx = i + 1;
+
+            // max_nx >= x_i + dx  -> max_nx - x_i >= dx
+            output_file << "  c" << cid++ << ": "
+                        << "max_n" << netId << "x - x" << x_idx
+                        << " >= " << dx << "\n";
+
+            // min_nx <= x_i + dx  -> min_nx - x_i <= dx
+            output_file << "  c" << cid++ << ": "
+                        << "min_n" << netId << "x - x" << x_idx
+                        << " <= " << dx << "\n";
+
+            // max_ny >= y_i + dy  -> max_ny - y_i >= dy
+            output_file << "  c" << cid++ << ": "
+                        << "max_n" << netId << "y - y" << y_idx
+                        << " >= " << dy << "\n";
+
+            // min_ny <= y_i + dy  -> min_ny - y_i <= dy
+            output_file << "  c" << cid++ << ": "
+                        << "min_n" << netId << "y - y" << y_idx
+                        << " <= " << dy << "\n";
+        }
+
+        // ----- Pad pins -----
+        for (int pid : net.pad_ids) {
+            // pad mapping:
+            // pad0: left edge middle   -> (0, 0.5 y)
+            // pad1: top edge middle    -> (floor(W/2), y)
+            // pad2: right edge middle  -> (W, 0.5 y)
+            // pad3: bottom edge middle -> (floor(W/2), 0)
+
+            double padX = 0.0;
+
+            if (pid == 0) {              // left middle
+                padX = 0.0;
+                // X: constant
+                output_file << "  c" << cid++ << ": "
+                            << "max_n" << netId << "x >= " << padX << "\n";
+                output_file << "  c" << cid++ << ": "
+                            << "min_n" << netId << "x <= " << padX << "\n";
+
+                // Y: 0.5 y  -> max_ny >= 0.5 y; min_ny <= 0.5 y
+                output_file << "  c" << cid++ << ": "
+                            << "max_n" << netId << "y - 0.5 y >= 0\n";
+                output_file << "  c" << cid++ << ": "
+                            << "min_n" << netId << "y - 0.5 y <= 0\n";
+            } else if (pid == 1) {       // top middle
+                padX = W_mid;
+                output_file << "  c" << cid++ << ": "
+                            << "max_n" << netId << "x >= " << padX << "\n";
+                output_file << "  c" << cid++ << ": "
+                            << "min_n" << netId << "x <= " << padX << "\n";
+
+                // Y: y
+                output_file << "  c" << cid++ << ": "
+                            << "max_n" << netId << "y - y >= 0\n";
+                output_file << "  c" << cid++ << ": "
+                            << "min_n" << netId << "y - y <= 0\n";
+            } else if (pid == 2) {       // right middle
+                padX = W;
+                output_file << "  c" << cid++ << ": "
+                            << "max_n" << netId << "x >= " << padX << "\n";
+                output_file << "  c" << cid++ << ": "
+                            << "min_n" << netId << "x <= " << padX << "\n";
+
+                // Y: 0.5 y
+                output_file << "  c" << cid++ << ": "
+                            << "max_n" << netId << "y - 0.5 y >= 0\n";
+                output_file << "  c" << cid++ << ": "
+                            << "min_n" << netId << "y - 0.5 y <= 0\n";
+            } else if (pid == 3) {       // bottom middle
+                padX = W_mid;
+                output_file << "  c" << cid++ << ": "
+                            << "max_n" << netId << "x >= " << padX << "\n";
+                output_file << "  c" << cid++ << ": "
+                            << "min_n" << netId << "x <= " << padX << "\n";
+
+                // Y: 0
+                output_file << "  c" << cid++ << ": "
+                            << "max_n" << netId << "y >= 0\n";
+                output_file << "  c" << cid++ << ": "
+                            << "min_n" << netId << "y <= 0\n";
+            } else {
+                std::cerr << "Warning: unknown pad id " << pid << " in net "
+                          << net.name << "\n";
+            }
+        }
+    }
+
     // ---------- Bounds / Integers / Binaries ----------
     output_file << "Bounds\n\n";
     output_file << "Integers\n\n";
@@ -298,56 +457,107 @@ void ConvertMatrixToLPFILE(vector<vector<int>>& matrix, string output_filepath) 
     output_file.close();
 }
 
+// -------------------------------------------------------
+// main: read HB / nets / pads, call Sutanthavibul, write LP
+// -------------------------------------------------------
 int main(int argc, char* argv[]) {
     if (argc < 4) {
-        std::cerr << "Usage: " << argv[0] << " <input_file> <output_file> <x(width of die)\n";
+        std::cerr << "Usage: " << argv[0]
+                  << " <input_file> <output_file> <x(width of die)>\n";
         return 1;
     }
 
     double t0, t1, t;
     t0 = GetTime(); // start time
 
-    int num_of_hardblocks; HardBlock* hardblocks;
-    int num_of_pads;       Pad* pads;
-    int num_of_nets;       Net* nets;
+    int num_of_hardblocks = 0;
+    int num_of_pads       = 0;
+    int num_of_nets       = 0;
+
+    HardBlock* hardblocks;
     vector<vector<int>> matrix;
+
+    std::vector<NetHPWL> nets_hpwl;
+
     int total_block_area = 0;
- 
 
-/*---Read input---*/
-    string input_filepath = argv[1];  // ../testcase/public1.txt
+    /*---Read input---*/
+    string input_filepath = argv[1];
     ifstream input_file(input_filepath);
-    string input;
-    stringstream line;
+    if (!input_file) {
+        std::cerr << "Cannot open input file: " << input_filepath << "\n";
+        return 1;
+    }
 
-    // Read Number of Hardblocks
-    getline(input_file, input);
-    string dummy0;
-    line.clear(); line.str(input);
-    line >> dummy0 >> num_of_hardblocks;
+    string lineStr;
+    auto nextLogicalLine = [&](std::string& out) -> bool {
+        std::string raw;
+        while (std::getline(input_file, raw)) {
+            auto first = raw.find_first_not_of(" \t\r\n");
+            if (first == std::string::npos) continue; // all whitespace
+            auto last = raw.find_last_not_of(" \t\r\n");
+            out = raw.substr(first, last - first + 1);
+            if (out.rfind("//", 0) == 0 || out[0] == '#') continue; // comment
+            return true;
+        }
+        return false;
+    };
+
+    std::stringstream line;
+
+    // Read num_of_hardblocks
+    if (!nextLogicalLine(lineStr)) {
+        std::cerr << "Error: missing num_of_hardblocks\n";
+        return 1;
+    }
+    line.clear(); line.str(lineStr);
+    std::string key;
+    line >> key >> num_of_hardblocks;
+    if (key != "num_of_hardblocks") {
+        std::cerr << "Error: expected 'num_of_hardblocks', got '" << key << "'\n";
+        return 1;
+    }
+
+    // Read num_of_nets
+    if (!nextLogicalLine(lineStr)) {
+        std::cerr << "Error: missing num_of_nets\n";
+        return 1;
+    }
+    line.clear(); line.str(lineStr);
+    line >> key >> num_of_nets;
+    if (key != "num_of_nets") {
+        std::cerr << "Error: expected 'num_of_nets', got '" << key << "'\n";
+        return 1;
+    }
+
+    // Read num_of_pads
+    if (!nextLogicalLine(lineStr)) {
+        std::cerr << "Error: missing num_of_pads\n";
+        return 1;
+    }
+    line.clear(); line.str(lineStr);
+    line >> key >> num_of_pads;
+    if (key != "num_of_pads") {
+        std::cerr << "Error: expected 'num_of_pads', got '" << key << "'\n";
+        return 1;
+    }
+
     hardblocks = new HardBlock[num_of_hardblocks];
-
-    // 不要再手動多讀幾行，直接由 while 來跳過空白 / 註解
     total_block_area = 0;
 
+    // Read hardblocks section: lines like "hb0 4 2"
     int blocks_read = 0;
-    while (blocks_read < num_of_hardblocks && std::getline(input_file, input)) {
-        // 去掉前後空白
-        auto first = input.find_first_not_of(" \t\r\n");
-        if (first == std::string::npos) continue; // 全空白
-        auto last = input.find_last_not_of(" \t\r\n");
-        std::string trimmed = input.substr(first, last - first + 1);
-
-        // 跳過註解
-        if (trimmed.rfind("//", 0) == 0 || trimmed[0] == '#') continue;
+    while (blocks_read < num_of_hardblocks && nextLogicalLine(lineStr)) {
+        // Skip until we see something that starts with "hb"
+        if (lineStr.rfind("hb", 0) != 0) continue;
 
         line.clear();
-        line.str(trimmed);
+        line.str(lineStr);
 
         std::string name;
         int w = 0, h = 0;
         if (!(line >> name >> w >> h)) {
-            std::cerr << "Error: invalid hardblock line: " << trimmed << "\n";
+            std::cerr << "Error: invalid hardblock line: " << lineStr << "\n";
             return 1;
         }
 
@@ -365,37 +575,96 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-        
-    // pirnt hardblocks
-    cout << "HardBlocks: " << endl;
-    for (int i = 0; i < num_of_hardblocks; i++) {
-        cout << "HardBlock " << i << ": " << get<0>(hardblocks[i].block) << " " << get<1>(hardblocks[i].block) << endl;
+    // Read nets section: lines like "net0 hb0 hb1 hb7 pad0"
+    nets_hpwl.reserve(num_of_nets);
+    int nets_read = 0;
+    while (nets_read < num_of_nets && nextLogicalLine(lineStr)) {
+        if (lineStr.rfind("net", 0) != 0) continue;
+
+        line.clear();
+        line.str(lineStr);
+
+        NetHPWL net;
+        line >> net.name;
+
+        std::string tok;
+        while (line >> tok) {
+            if (tok.rfind("hb", 0) == 0) {
+                int bid = std::stoi(tok.substr(2));
+                if (bid < 0 || bid >= num_of_hardblocks) {
+                    std::cerr << "Error: hb index out of range in net line: "
+                              << lineStr << "\n";
+                    return 1;
+                }
+                net.block_ids.push_back(bid);
+            } else if (tok.rfind("pad", 0) == 0) {
+                int pid = std::stoi(tok.substr(3));
+                if (pid < 0 || pid >= num_of_pads) {
+                    std::cerr << "Error: pad index out of range in net line: "
+                              << lineStr << "\n";
+                    return 1;
+                }
+                net.pad_ids.push_back(pid);
+            } else {
+                std::cerr << "Warning: unknown token '" << tok
+                          << "' in net line: " << lineStr << "\n";
+            }
+        }
+
+        nets_hpwl.push_back(net);
+        ++nets_read;
     }
-    cout << "total_block_area: " << total_block_area << endl;
 
+    if (nets_read != num_of_nets) {
+        std::cerr << "Error: expected " << num_of_nets
+                  << " nets, but read " << nets_read << "\n";
+        return 1;
+    }
 
-    Sutanthavibul(hardblocks, num_of_hardblocks, std::stoi(argv[3]), matrix);
+    // ---- Print hardblocks ----
+    cout << "HardBlocks:\n";
+    for (int i = 0; i < num_of_hardblocks; i++) {
+        cout << "  hb" << i << ": "
+             << get<0>(hardblocks[i].block) << " "
+             << get<1>(hardblocks[i].block) << "\n";
+    }
+    cout << "total_block_area: " << total_block_area << "\n";
 
+    // ---- Print nets ----
+    cout << "Nets (HPWL pins):\n";
+    for (const auto& net : nets_hpwl) {
+        cout << "  " << net.name << " : blocks =";
+        for (int bid : net.block_ids) {
+            cout << " hb" << bid;
+        }
+        if (!net.pad_ids.empty()) {
+            cout << " ; pads =";
+            for (int pid : net.pad_ids) {
+                cout << " pad" << pid;
+            }
+        }
+        cout << "\n";
+    }
+
+    int dieWidth = std::stoi(argv[3]);
+
+    // Build Sutanthavibul geometric constraints
+    Sutanthavibul(hardblocks, num_of_hardblocks, dieWidth, matrix);
 
     t1 = GetTime();
-    t = t1 - t0;
+    t  = t1 - t0;
 
-// /* --- Write result to output file --- */
-    ConvertMatrixToLPFILE(matrix, argv[2]);
-    cout << endl << "Writing result to " << argv[2] << endl;
- 
-//     ofstream output_file(output_filepath);
-//     output_file << "Wirelength " << total_wirelength << endl << endl;
-//     output_file << "NumHardBlocks " << num_of_hardblocks << endl;
-//     for (int i = 0; i < num_of_hardblocks; i++) {
-//         output_file << "hb" << i << " " << get<0>(cg.coord[i]) << " " << get<1>(cg.coord[i]) << " " << cg.rotate[i] << endl;
-//     }
-//     output_file.close();
-// 
-//     double Stage2_time = GetTime() - t0 - Stage1_time;
-//     cout << "Stage 1 time: " << Stage1_time << " seconds" << endl;
-//     cout << "Stage 2 time: " << Stage2_time << " seconds" << endl;
-//     cout << "Total   Time: " << GetTime() - t0 << " seconds" << endl;
+    // --- Write LP file ---
+    ConvertMatrixToLPFILE(matrix, argv[2],
+                          hardblocks,
+                          num_of_hardblocks,
+                          nets_hpwl,
+                          dieWidth);
+
+    cout << "\nWriting result to " << argv[2] << endl;
+
+    // (optional) print timing if you like
+    // cout << "Total Time: " << GetTime() - t0 << " seconds" << endl;
 
     return 0;
-} 
+}
