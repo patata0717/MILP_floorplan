@@ -10,7 +10,9 @@
 #include <cmath>
 #include <random>
 #include <algorithm>
-#include <cctype>   // for std::isdigit
+#include <cctype>       // std::isdigit, std::isalpha, ...
+#include <unordered_map>
+
 #include "datastructure.hpp"
 
 #define EQ 0
@@ -23,7 +25,7 @@ using namespace std;
 // Helper structs for HPWL
 // -------------------------
 struct NetHPWL {
-    std::string name;
+    std::string name;        // 原始 net 名字，例如 net0, nDIR, nC30, ...
     std::vector<int> block_ids; // indices into hardblocks array
     std::vector<int> pad_ids;   // pad indices 0..num_of_pads-1
 };
@@ -52,9 +54,44 @@ static int extractNetId(const std::string& name) {
     return -1; // fallback
 }
 
+// Make a safe tag for LP variable names from a net name.
+// Special case: keep old behavior for "net<digits>" → "n<digits>".
+static std::string makeNetTag(const std::string& name) {
+    // keep backward compatible for net0/net1/... → n0/n1/...
+    if (name.rfind("net", 0) == 0) {
+        std::string digits;
+        for (char c : name) {
+            if (std::isdigit(static_cast<unsigned char>(c))) {
+                digits.push_back(c);
+            }
+        }
+        if (!digits.empty()) {
+            return "n" + digits;  // old style: max_n0x, max_n1x, ...
+        }
+    }
+
+    // general case: sanitize the name itself
+    std::string tag;
+    tag.reserve(name.size() + 1);
+
+    // ensure first char is a letter or '_'
+    if (name.empty() ||
+        !(std::isalpha(static_cast<unsigned char>(name[0])) || name[0] == '_')) {
+        tag.push_back('n');
+    }
+
+    for (char c : name) {
+        if (std::isalnum(static_cast<unsigned char>(c)) || c == '_') {
+            tag.push_back(c);
+        } else {
+            tag.push_back('_');
+        }
+    }
+    return tag;
+}
+
 // -------------------------------------------------------
 // Sutanthavibul: dimension + non-overlap -> matrix
-// (unchanged from your original code)
 // -------------------------------------------------------
 void Sutanthavibul(HardBlock* hardblocks, int N, int W, vector<vector<int>>& matrix) {
     int numPermu = N * (N - 1) / 2;
@@ -219,7 +256,7 @@ void ConvertMatrixToLPFILE(vector<vector<int>>& matrix,
     int OPcol  = numCols - 2;
     int ycol   = numCols - 3; // global y
 
-    // deduce N from #constraints: 2N^2 = numRows (still true; HPWL added separately)
+    // deduce N from #constraints: 2N^2 = numRows
     int N = (int)std::lround(std::sqrt(numRows / 2.0));
     int numPermu = N * (N - 1) / 2;
 
@@ -265,11 +302,11 @@ void ConvertMatrixToLPFILE(vector<vector<int>>& matrix,
 
     // Add Σ_n (max_nx - min_nx + max_ny - min_ny)
     for (const auto& net : nets_hpwl) {
-        int netId = extractNetId(net.name);
-        output_file << " + max_n" << netId << "x"
-                    << " - min_n" << netId << "x"
-                    << " + max_n" << netId << "y"
-                    << " - min_n" << netId << "y";
+        std::string tag = makeNetTag(net.name);
+        output_file << " + max_" << tag << "x"
+                    << " - min_" << tag << "x"
+                    << " + max_" << tag << "y"
+                    << " - min_" << tag << "y";
     }
     output_file << "\n";
 
@@ -321,10 +358,10 @@ void ConvertMatrixToLPFILE(vector<vector<int>>& matrix,
     int cid = numRows + 1;
 
     double W      = static_cast<double>(dieWidth);
-    double W_mid  = std::floor(W / 2.0); // floor(W/2), as requested
+    double W_mid  = std::floor(W / 2.0); // floor(W/2)
 
     for (const auto& net : nets_hpwl) {
-        int netId = extractNetId(net.name);
+        std::string tag = makeNetTag(net.name);
 
         // ----- HardBlock pins -----
         for (int bid : net.block_ids) {
@@ -342,22 +379,22 @@ void ConvertMatrixToLPFILE(vector<vector<int>>& matrix,
 
             // max_nx >= x_i + dx  -> max_nx - x_i >= dx
             output_file << "  c" << cid++ << ": "
-                        << "max_n" << netId << "x - x" << x_idx
+                        << "max_" << tag << "x - x" << x_idx
                         << " >= " << dx << "\n";
 
             // min_nx <= x_i + dx  -> min_nx - x_i <= dx
             output_file << "  c" << cid++ << ": "
-                        << "min_n" << netId << "x - x" << x_idx
+                        << "min_" << tag << "x - x" << x_idx
                         << " <= " << dx << "\n";
 
             // max_ny >= y_i + dy  -> max_ny - y_i >= dy
             output_file << "  c" << cid++ << ": "
-                        << "max_n" << netId << "y - y" << y_idx
+                        << "max_" << tag << "y - y" << y_idx
                         << " >= " << dy << "\n";
 
             // min_ny <= y_i + dy  -> min_ny - y_i <= dy
             output_file << "  c" << cid++ << ": "
-                        << "min_n" << netId << "y - y" << y_idx
+                        << "min_" << tag << "y - y" << y_idx
                         << " <= " << dy << "\n";
         }
 
@@ -375,51 +412,51 @@ void ConvertMatrixToLPFILE(vector<vector<int>>& matrix,
                 padX = 0.0;
                 // X: constant
                 output_file << "  c" << cid++ << ": "
-                            << "max_n" << netId << "x >= " << padX << "\n";
+                            << "max_" << tag << "x >= " << padX << "\n";
                 output_file << "  c" << cid++ << ": "
-                            << "min_n" << netId << "x <= " << padX << "\n";
+                            << "min_" << tag << "x <= " << padX << "\n";
 
                 // Y: 0.5 y  -> max_ny >= 0.5 y; min_ny <= 0.5 y
                 output_file << "  c" << cid++ << ": "
-                            << "max_n" << netId << "y - 0.5 y >= 0\n";
+                            << "max_" << tag << "y - 0.5 y >= 0\n";
                 output_file << "  c" << cid++ << ": "
-                            << "min_n" << netId << "y - 0.5 y <= 0\n";
+                            << "min_" << tag << "y - 0.5 y <= 0\n";
             } else if (pid == 1) {       // top middle
                 padX = W_mid;
                 output_file << "  c" << cid++ << ": "
-                            << "max_n" << netId << "x >= " << padX << "\n";
+                            << "max_" << tag << "x >= " << padX << "\n";
                 output_file << "  c" << cid++ << ": "
-                            << "min_n" << netId << "x <= " << padX << "\n";
+                            << "min_" << tag << "x <= " << padX << "\n";
 
                 // Y: y
                 output_file << "  c" << cid++ << ": "
-                            << "max_n" << netId << "y - y >= 0\n";
+                            << "max_" << tag << "y - y >= 0\n";
                 output_file << "  c" << cid++ << ": "
-                            << "min_n" << netId << "y - y <= 0\n";
+                            << "min_" << tag << "y - y <= 0\n";
             } else if (pid == 2) {       // right middle
                 padX = W;
                 output_file << "  c" << cid++ << ": "
-                            << "max_n" << netId << "x >= " << padX << "\n";
+                            << "max_" << tag << "x >= " << padX << "\n";
                 output_file << "  c" << cid++ << ": "
-                            << "min_n" << netId << "x <= " << padX << "\n";
+                            << "min_" << tag << "x <= " << padX << "\n";
 
                 // Y: 0.5 y
                 output_file << "  c" << cid++ << ": "
-                            << "max_n" << netId << "y - 0.5 y >= 0\n";
+                            << "max_" << tag << "y - 0.5 y >= 0\n";
                 output_file << "  c" << cid++ << ": "
-                            << "min_n" << netId << "y - 0.5 y <= 0\n";
+                            << "min_" << tag << "y - 0.5 y <= 0\n";
             } else if (pid == 3) {       // bottom middle
                 padX = W_mid;
                 output_file << "  c" << cid++ << ": "
-                            << "max_n" << netId << "x >= " << padX << "\n";
+                            << "max_" << tag << "x >= " << padX << "\n";
                 output_file << "  c" << cid++ << ": "
-                            << "min_n" << netId << "x <= " << padX << "\n";
+                            << "min_" << tag << "x <= " << padX << "\n";
 
                 // Y: 0
                 output_file << "  c" << cid++ << ": "
-                            << "max_n" << netId << "y >= 0\n";
+                            << "max_" << tag << "y >= 0\n";
                 output_file << "  c" << cid++ << ": "
-                            << "min_n" << netId << "y <= 0\n";
+                            << "min_" << tag << "y <= 0\n";
             } else {
                 std::cerr << "Warning: unknown pad id " << pid << " in net "
                           << net.name << "\n";
@@ -504,6 +541,7 @@ int main(int argc, char* argv[]) {
     };
 
     std::stringstream line;
+    std::string key;
 
     // Read num_of_hardblocks
     if (!nextLogicalLine(lineStr)) {
@@ -511,7 +549,6 @@ int main(int argc, char* argv[]) {
         return 1;
     }
     line.clear(); line.str(lineStr);
-    std::string key;
     line >> key >> num_of_hardblocks;
     if (key != "num_of_hardblocks") {
         std::cerr << "Error: expected 'num_of_hardblocks', got '" << key << "'\n";
@@ -545,10 +582,11 @@ int main(int argc, char* argv[]) {
     hardblocks = new HardBlock[num_of_hardblocks];
     total_block_area = 0;
 
-    // Read hardblocks section: lines like "hb0 4 2"
+    // Read hardblocks section: lines like "hb0 4 2" / "hbk1 413 220"
     int blocks_read = 0;
     while (blocks_read < num_of_hardblocks && nextLogicalLine(lineStr)) {
         // Skip until we see something that starts with "hb"
+        // For ami33: "hbk1" 等也會通過這個檢查
         if (lineStr.rfind("hb", 0) != 0) continue;
 
         line.clear();
@@ -575,29 +613,38 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    // Read nets section: lines like "net0 hb0 hb1 hb7 pad0"
+    // 建立「block 名稱 → index」對應，支援 hbk1/hbk5a/... 之類名字
+    std::unordered_map<std::string, int> blockNameToIndex;
+    for (int i = 0; i < num_of_hardblocks; ++i) {
+        blockNameToIndex[hardblocks[i].name] = i;
+    }
+
+    // Read nets section: e.g.
+    //   net0 hb0 hb1 hb7 pad0
+    //   nDIR hbk9a hbk11
     nets_hpwl.reserve(num_of_nets);
     int nets_read = 0;
     while (nets_read < num_of_nets && nextLogicalLine(lineStr)) {
-        if (lineStr.rfind("net", 0) != 0) continue;
-
         line.clear();
         line.str(lineStr);
 
         NetHPWL net;
-        line >> net.name;
+        line >> net.name;  // 可以是 net0 / nDIR / nC30 / ...
+
+        if (net.name.empty()) continue;
 
         std::string tok;
         while (line >> tok) {
-            if (tok.rfind("hb", 0) == 0) {
-                int bid = std::stoi(tok.substr(2));
-                if (bid < 0 || bid >= num_of_hardblocks) {
-                    std::cerr << "Error: hb index out of range in net line: "
-                              << lineStr << "\n";
-                    return 1;
-                }
+            // 先看是不是 hardblock 名稱（hbk1、hbk5a、hb0...）
+            auto it = blockNameToIndex.find(tok);
+            if (it != blockNameToIndex.end()) {
+                int bid = it->second;
                 net.block_ids.push_back(bid);
-            } else if (tok.rfind("pad", 0) == 0) {
+                continue;
+            }
+
+            // pad0~pad3
+            if (tok.rfind("pad", 0) == 0) {
                 int pid = std::stoi(tok.substr(3));
                 if (pid < 0 || pid >= num_of_pads) {
                     std::cerr << "Error: pad index out of range in net line: "
@@ -605,7 +652,12 @@ int main(int argc, char* argv[]) {
                     return 1;
                 }
                 net.pad_ids.push_back(pid);
-            } else {
+                continue;
+            }
+
+            // 其他 token（像 GND/PWR）直接忽略，只噴 warning 一下
+            if (tok != "GND" && tok != "PWR" &&
+                tok != "VDD" && tok != "VSS") {
                 std::cerr << "Warning: unknown token '" << tok
                           << "' in net line: " << lineStr << "\n";
             }
@@ -624,7 +676,7 @@ int main(int argc, char* argv[]) {
     // ---- Print hardblocks ----
     cout << "HardBlocks:\n";
     for (int i = 0; i < num_of_hardblocks; i++) {
-        cout << "  hb" << i << ": "
+        cout << "  " << hardblocks[i].name << " (hb" << i << "): "
              << get<0>(hardblocks[i].block) << " "
              << get<1>(hardblocks[i].block) << "\n";
     }
@@ -635,7 +687,7 @@ int main(int argc, char* argv[]) {
     for (const auto& net : nets_hpwl) {
         cout << "  " << net.name << " : blocks =";
         for (int bid : net.block_ids) {
-            cout << " hb" << bid;
+            cout << " " << hardblocks[bid].name << "(hb" << bid << ")";
         }
         if (!net.pad_ids.empty()) {
             cout << " ; pads =";
@@ -653,6 +705,7 @@ int main(int argc, char* argv[]) {
 
     t1 = GetTime();
     t  = t1 - t0;
+    (void)t; // 如果你不想印時間，避免 unused warning
 
     // --- Write LP file ---
     ConvertMatrixToLPFILE(matrix, argv[2],
@@ -663,8 +716,7 @@ int main(int argc, char* argv[]) {
 
     cout << "\nWriting result to " << argv[2] << endl;
 
-    // (optional) print timing if you like
-    // cout << "Total Time: " << GetTime() - t0 << " seconds" << endl;
+    delete [] hardblocks;
 
     return 0;
 }

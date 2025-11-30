@@ -1,5 +1,8 @@
 num_of_hardblocks 33
+num_of_nets 0
+num_of_pads 0
 
+// hardblocks
 // name w h
 hbk1   413 220
 hbk2   112 321
@@ -34,3 +37,7 @@ hbk18  213 229
 hbk19  313 324
 hbk20  413 424
 hbk21  513 524
+
+// nets
+// name pins
+

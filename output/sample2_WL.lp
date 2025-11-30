@@ -1,21 +1,21 @@
 Minimize
   20 y + max_n0x - min_n0x + max_n0y - min_n0y + max_n1x - min_n1x + max_n1y - min_n1y + max_n2x - min_n2x + max_n2y - min_n2y + max_n3x - min_n3x + max_n3y - min_n3y + max_n4x - min_n4x + max_n4y - min_n4y + max_n5x - min_n5x + max_n5y - min_n5y + max_n7x - min_n7x + max_n7y - min_n7y + max_n8x - min_n8x + max_n8y - min_n8y
 Subject To
-  c1: x1 - 2 r1 <= 6
+  c1: x1 - 2 r1 <= 5
   c2: y1 + 2 r1 - y <= -2
-  c3: x2 + 2 r2 <= 9
+  c3: x2 + 2 r2 <= 8
   c4: y2 - 2 r2 - y <= -3
-  c5: x3 <= 8
+  c5: x3 <= 7
   c6: y3 - y <= -2
-  c7: x4 - 2 r4 <= 5
+  c7: x4 - 2 r4 <= 4
   c8: y4 + 2 r4 - y <= -3
-  c9: x5 + r5 <= 8
+  c9: x5 + r5 <= 7
   c10: y5 - r5 - y <= -3
-  c11: x6 - 2 r6 <= 5
+  c11: x6 - 2 r6 <= 4
   c12: y6 + 2 r6 - y <= -3
-  c13: x7 + r7 <= 9
+  c13: x7 + r7 <= 8
   c14: y7 - r7 - y <= -2
-  c15: x8 + 2 r8 <= 8
+  c15: x8 + 2 r8 <= 7
   c16: y8 - 2 r8 - y <= -4
   c17: x1 - x2 - 2 r1 - 28 p12 - 28 q12 <= -4
   c18: y1 - y2 + 2 r1 - 28 p12 + 28 q12 <= 26
@@ -161,8 +161,8 @@ Subject To
   c158: min_n2x - x7 <= 0
   c159: max_n2y - y7 >= 1
   c160: min_n2y - y7 <= 1
-  c161: max_n2x >= 5
-  c162: min_n2x <= 5
+  c161: max_n2x >= 4
+  c162: min_n2x <= 4
   c163: max_n2y - y >= 0
   c164: min_n2y - y <= 0
   c165: max_n3x - x4 >= 2
@@ -173,8 +173,8 @@ Subject To
   c170: min_n3x - x5 <= 1
   c171: max_n3y - y5 >= 1
   c172: min_n3y - y5 <= 1
-  c173: max_n3x >= 5
-  c174: min_n3x <= 5
+  c173: max_n3x >= 4
+  c174: min_n3x <= 4
   c175: max_n3y - y >= 0
   c176: min_n3y - y <= 0
   c177: max_n4x - x1 >= 2
@@ -209,8 +209,8 @@ Subject To
   c206: min_n5x - x7 <= 0
   c207: max_n5y - y7 >= 1
   c208: min_n5y - y7 <= 1
-  c209: max_n5x >= 10
-  c210: min_n5x <= 10
+  c209: max_n5x >= 9
+  c210: min_n5x <= 9
   c211: max_n5y - 0.5 y >= 0
   c212: min_n5y - 0.5 y <= 0
   c213: max_n7x - x1 >= 2
@@ -225,8 +225,8 @@ Subject To
   c222: min_n7x - x5 <= 1
   c223: max_n7y - y5 >= 1
   c224: min_n7y - y5 <= 1
-  c225: max_n7x >= 5
-  c226: min_n7x <= 5
+  c225: max_n7x >= 4
+  c226: min_n7x <= 4
   c227: max_n7y >= 0
   c228: min_n7y <= 0
   c229: max_n8x - x3 >= 1

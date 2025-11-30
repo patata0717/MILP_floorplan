@@ -1,0 +1,60 @@
+<?xml version="1.0" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="1000" height="777.778" viewBox="0 0 1000 777.778">
+
+  <rect x="0" y="0" width="1000" height="777.778" fill="none" stroke="black" stroke-width="1" />
+
+  <rect x="0" y="555.556" width="444.444" height="222.222" fill="#ffcccc" stroke="black" stroke-width="0.5" />
+  <text x="222.222" y="666.667" font-family="sans-serif" font-size="25.9259" fill="black" text-anchor="middle" dominant-baseline="middle">hb0</text>
+  <rect x="555.556" y="222.222" width="111.111" height="333.333" fill="#ccffcc" stroke="black" stroke-width="0.5" />
+  <text x="611.111" y="388.889" font-family="sans-serif" font-size="25.9259" fill="black" text-anchor="middle" dominant-baseline="middle">hb1</text>
+  <rect x="333.333" y="0" width="222.222" height="222.222" fill="#ccccff" stroke="black" stroke-width="0.5" />
+  <text x="444.444" y="111.111" font-family="sans-serif" font-size="25.9259" fill="black" text-anchor="middle" dominant-baseline="middle">hb2</text>
+  <rect x="0" y="0" width="333.333" height="555.556" fill="#ffe0b3" stroke="black" stroke-width="0.5" />
+  <text x="166.667" y="277.778" font-family="sans-serif" font-size="25.9259" fill="black" text-anchor="middle" dominant-baseline="middle">hb3</text>
+  <rect x="333.333" y="222.222" width="222.222" height="333.333" fill="#e0ccff" stroke="black" stroke-width="0.5" />
+  <text x="444.444" y="388.889" font-family="sans-serif" font-size="25.9259" fill="black" text-anchor="middle" dominant-baseline="middle">hb4</text>
+  <rect x="666.667" y="0" width="333.333" height="555.556" fill="#ccffff" stroke="black" stroke-width="0.5" />
+  <text x="833.333" y="277.778" font-family="sans-serif" font-size="25.9259" fill="black" text-anchor="middle" dominant-baseline="middle">hb5</text>
+  <rect x="555.556" y="0" width="111.111" height="222.222" fill="#ffcccc" stroke="black" stroke-width="0.5" />
+  <text x="611.111" y="111.111" font-family="sans-serif" font-size="25.9259" fill="black" text-anchor="middle" dominant-baseline="middle">hb6</text>
+  <rect x="444.444" y="555.556" width="444.444" height="222.222" fill="#ccffcc" stroke="black" stroke-width="0.5" />
+  <text x="666.667" y="666.667" font-family="sans-serif" font-size="25.9259" fill="black" text-anchor="middle" dominant-baseline="middle">hb7</text>
+
+  <line x1="375" y1="541.667" x2="222.222" y2="666.667" stroke="#0000cc" stroke-width="2" stroke-opacity="0.7" />
+  <line x1="375" y1="541.667" x2="611.111" y2="388.889" stroke="#0000cc" stroke-width="2" stroke-opacity="0.7" />
+  <line x1="375" y1="541.667" x2="666.667" y2="666.667" stroke="#0000cc" stroke-width="2" stroke-opacity="0.7" />
+  <line x1="375" y1="541.667" x2="0" y2="444.444" stroke="#0000cc" stroke-width="2" stroke-opacity="0.7" />
+  <line x1="722.222" y1="333.333" x2="611.111" y2="388.889" stroke="#cc0000" stroke-width="2" stroke-opacity="0.7" />
+  <line x1="722.222" y1="333.333" x2="833.333" y2="277.778" stroke="#cc0000" stroke-width="2" stroke-opacity="0.7" />
+  <line x1="500" y1="74.0741" x2="444.444" y2="111.111" stroke="#009900" stroke-width="2" stroke-opacity="0.7" />
+  <line x1="500" y1="74.0741" x2="611.111" y2="111.111" stroke="#009900" stroke-width="2" stroke-opacity="0.7" />
+  <line x1="500" y1="74.0741" x2="444.444" y2="0" stroke="#009900" stroke-width="2" stroke-opacity="0.7" />
+  <line x1="351.852" y1="222.222" x2="166.667" y2="277.778" stroke="#9933cc" stroke-width="2" stroke-opacity="0.7" />
+  <line x1="351.852" y1="222.222" x2="444.444" y2="388.889" stroke="#9933cc" stroke-width="2" stroke-opacity="0.7" />
+  <line x1="351.852" y1="222.222" x2="444.444" y2="0" stroke="#9933cc" stroke-width="2" stroke-opacity="0.7" />
+  <line x1="277.778" y1="444.444" x2="222.222" y2="666.667" stroke="#ff9900" stroke-width="2" stroke-opacity="0.7" />
+  <line x1="277.778" y1="444.444" x2="166.667" y2="277.778" stroke="#ff9900" stroke-width="2" stroke-opacity="0.7" />
+  <line x1="277.778" y1="444.444" x2="444.444" y2="388.889" stroke="#ff9900" stroke-width="2" stroke-opacity="0.7" />
+  <line x1="611.111" y1="268.519" x2="611.111" y2="388.889" stroke="#0099cc" stroke-width="2" stroke-opacity="0.7" />
+  <line x1="611.111" y1="268.519" x2="444.444" y2="111.111" stroke="#0099cc" stroke-width="2" stroke-opacity="0.7" />
+  <line x1="611.111" y1="268.519" x2="166.667" y2="277.778" stroke="#0099cc" stroke-width="2" stroke-opacity="0.7" />
+  <line x1="611.111" y1="268.519" x2="833.333" y2="277.778" stroke="#0099cc" stroke-width="2" stroke-opacity="0.7" />
+  <line x1="611.111" y1="268.519" x2="611.111" y2="111.111" stroke="#0099cc" stroke-width="2" stroke-opacity="0.7" />
+  <line x1="611.111" y1="268.519" x2="1000" y2="444.444" stroke="#0099cc" stroke-width="2" stroke-opacity="0.7" />
+  <line x1="388.889" y1="486.111" x2="222.222" y2="666.667" stroke="#cc0099" stroke-width="2" stroke-opacity="0.7" />
+  <line x1="388.889" y1="486.111" x2="444.444" y2="111.111" stroke="#cc0099" stroke-width="2" stroke-opacity="0.7" />
+  <line x1="388.889" y1="486.111" x2="444.444" y2="388.889" stroke="#cc0099" stroke-width="2" stroke-opacity="0.7" />
+  <line x1="388.889" y1="486.111" x2="444.444" y2="777.778" stroke="#cc0099" stroke-width="2" stroke-opacity="0.7" />
+  <line x1="425.926" y1="351.852" x2="444.444" y2="111.111" stroke="#666600" stroke-width="2" stroke-opacity="0.7" />
+  <line x1="425.926" y1="351.852" x2="166.667" y2="277.778" stroke="#666600" stroke-width="2" stroke-opacity="0.7" />
+  <line x1="425.926" y1="351.852" x2="666.667" y2="666.667" stroke="#666600" stroke-width="2" stroke-opacity="0.7" />
+  <rect x="-3" y="441.444" width="6" height="6" fill="#ff0000" stroke="black" stroke-width="0.5" />
+  <text x="8" y="450.444" font-family="sans-serif" font-size="12" fill="black">pad0</text>
+  <rect x="441.444" y="-3" width="6" height="6" fill="#ff0000" stroke="black" stroke-width="0.5" />
+  <text x="444.444" y="18" font-family="sans-serif" font-size="12" fill="black">pad1</text>
+  <rect x="997" y="441.444" width="6" height="6" fill="#ff0000" stroke="black" stroke-width="0.5" />
+  <text x="969" y="450.444" font-family="sans-serif" font-size="12" fill="black">pad2</text>
+  <rect x="441.444" y="774.778" width="6" height="6" fill="#ff0000" stroke="black" stroke-width="0.5" />
+  <text x="444.444" y="769.778" font-family="sans-serif" font-size="12" fill="black">pad3</text>
+
+</svg>

@@ -1,0 +1,197 @@
+
+Gurobi 12.0.3 (linux64, gurobi_cl) logging started Fri Nov 28 15:36:54 2025
+
+Set parameter Username
+Set parameter LicenseID to value 2724816
+Set parameter LogFile to value "gurobi.log"
+Using license file /opt/gurobi/gurobi.lic
+Academic license - for non-commercial use only - expires 2026-10-19
+
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (linux64 - "CentOS Linux 7 (Core)")
+Copyright (c) 2025, Gurobi Optimization, LLC
+
+Warning: unknown variable 'r3' in binary section
+Read LP format model from file output/sample2.lp
+Reading time = 0.00 seconds
+: 128 rows, 81 columns, 584 nonzeros
+
+Using Gurobi shared library /opt/gurobi1203/linux64/lib/libgurobi.so.12.0.3
+
+CPU model: Intel(R) Core(TM) i9-10900 CPU @ 2.80GHz, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 20 logical processors, using up to 20 threads
+
+Optimize a model with 128 rows, 81 columns and 584 nonzeros
+Model fingerprint: 0x154c30ea
+Variable types: 17 continuous, 64 integer (64 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 3e+01]
+  Objective range  [2e+01, 2e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 5e+01]
+Found heuristic solution: objective 180.0000000
+Presolve removed 1 rows and 1 columns
+Presolve time: 0.00s
+Presolved: 127 rows, 80 columns, 583 nonzeros
+Variable types: 17 continuous, 63 integer (63 binary)
+
+Root relaxation: objective 6.000000e+01, 29 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   60.00000    0   11  180.00000   60.00000  66.7%     -    0s
+H    0     0                     180.0000000   60.00000  66.7%     -    0s
+     0     0   60.00000    0   27  180.00000   60.00000  66.7%     -    0s
+H    0     0                     160.0000000   60.00000  62.5%     -    0s
+     0     0   60.00000    0   23  160.00000   60.00000  62.5%     -    0s
+     0     0   60.00000    0    9  160.00000   60.00000  62.5%     -    0s
+     0     0   60.00000    0   11  160.00000   60.00000  62.5%     -    0s
+H    0     0                     140.0000000   70.00000  50.0%     -    0s
+     0     0   70.00000    0   14  140.00000   70.00000  50.0%     -    0s
+     0     0   80.00000    0   18  140.00000   80.00000  42.9%     -    0s
+     0     0   84.00000    0   17  140.00000   84.00000  40.0%     -    0s
+     0     0   84.00000    0   17  140.00000   84.00000  40.0%     -    0s
+     0     0   84.00000    0   17  140.00000   84.00000  40.0%     -    0s
+     0     0   84.00000    0   19  140.00000   84.00000  40.0%     -    0s
+     0     0   84.00000    0    7  140.00000   84.00000  40.0%     -    0s
+     0     0   84.00000    0    8  140.00000   84.00000  40.0%     -    0s
+     0     0   84.00000    0   11  140.00000   84.00000  40.0%     -    0s
+     0     0   84.00000    0   11  140.00000   84.00000  40.0%     -    0s
+     0     0   85.00000    0    8  140.00000   85.00000  39.3%     -    0s
+     0     0   85.00000    0   10  140.00000   85.00000  39.3%     -    0s
+     0     0   85.00000    0   19  140.00000   85.00000  39.3%     -    0s
+     0     0   85.00000    0   21  140.00000   85.00000  39.3%     -    0s
+     0     0   85.00000    0   15  140.00000   85.00000  39.3%     -    0s
+     0     0   85.00000    0   10  140.00000   85.00000  39.3%     -    0s
+     0     2   85.00000    0    9  140.00000   85.00000  39.3%     -    0s
+* 1536   525              26     139.9999973  100.00000  28.6%   4.6    0s
+* 3618   601              28     139.9999967  100.00000  28.6%   5.3    0s
+H 5807   608                     139.9999920  120.00000  14.3%   5.2    0s
+
+Cutting planes:
+  Learned: 42
+  Gomory: 8
+  Cover: 154
+  MIR: 174
+  StrongCG: 1
+  Inf proof: 205
+  Network: 1
+  RLT: 23
+  Relax-and-lift: 2
+
+Explored 23230 nodes (123205 simplex iterations) in 0.52 seconds (0.62 work units)
+Thread count was 20 (of 20 available processors)
+
+Solution count 7: 140 140 140 ... 180
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 1.399999920282e+02, best bound 1.399999920282e+02, gap 0.0000%
+
+Wrote result file 'visualize/sample2.sol'
+
+
+Gurobi 12.0.3 (linux64, gurobi_cl) logging started Fri Nov 28 15:51:01 2025
+
+Set parameter Username
+Set parameter LicenseID to value 2724816
+Set parameter LogFile to value "gurobi.log"
+Using license file /opt/gurobi/gurobi.lic
+Academic license - for non-commercial use only - expires 2026-10-19
+
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (linux64 - "CentOS Linux 7 (Core)")
+Copyright (c) 2025, Gurobi Optimization, LLC
+
+
+Error 10003: Unable to open file 'sample2.lp' for input
+
+
+Gurobi 12.0.3 (linux64, gurobi_cl) logging started Fri Nov 28 15:51:08 2025
+
+Set parameter Username
+Set parameter LicenseID to value 2724816
+Set parameter LogFile to value "gurobi.log"
+Using license file /opt/gurobi/gurobi.lic
+Academic license - for non-commercial use only - expires 2026-10-19
+
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (linux64 - "CentOS Linux 7 (Core)")
+Copyright (c) 2025, Gurobi Optimization, LLC
+
+Warning: unknown variable 'r3' in binary section
+Read LP format model from file output/sample2.lp
+Reading time = 0.00 seconds
+: 128 rows, 81 columns, 584 nonzeros
+
+Using Gurobi shared library /opt/gurobi1203/linux64/lib/libgurobi.so.12.0.3
+
+CPU model: Intel(R) Core(TM) i9-10900 CPU @ 2.80GHz, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 20 logical processors, using up to 20 threads
+
+Optimize a model with 128 rows, 81 columns and 584 nonzeros
+Model fingerprint: 0x154c30ea
+Variable types: 17 continuous, 64 integer (64 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 3e+01]
+  Objective range  [2e+01, 2e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 5e+01]
+Found heuristic solution: objective 180.0000000
+Presolve removed 1 rows and 1 columns
+Presolve time: 0.00s
+Presolved: 127 rows, 80 columns, 583 nonzeros
+Variable types: 17 continuous, 63 integer (63 binary)
+
+Root relaxation: objective 6.000000e+01, 29 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   60.00000    0   11  180.00000   60.00000  66.7%     -    0s
+H    0     0                     180.0000000   60.00000  66.7%     -    0s
+     0     0   60.00000    0   27  180.00000   60.00000  66.7%     -    0s
+H    0     0                     160.0000000   60.00000  62.5%     -    0s
+     0     0   60.00000    0   23  160.00000   60.00000  62.5%     -    0s
+     0     0   60.00000    0    9  160.00000   60.00000  62.5%     -    0s
+     0     0   60.00000    0   11  160.00000   60.00000  62.5%     -    0s
+H    0     0                     140.0000000   70.00000  50.0%     -    0s
+     0     0   70.00000    0   14  140.00000   70.00000  50.0%     -    0s
+     0     0   80.00000    0   18  140.00000   80.00000  42.9%     -    0s
+     0     0   84.00000    0   17  140.00000   84.00000  40.0%     -    0s
+     0     0   84.00000    0   17  140.00000   84.00000  40.0%     -    0s
+     0     0   84.00000    0   17  140.00000   84.00000  40.0%     -    0s
+     0     0   84.00000    0   19  140.00000   84.00000  40.0%     -    0s
+     0     0   84.00000    0    7  140.00000   84.00000  40.0%     -    0s
+     0     0   84.00000    0    8  140.00000   84.00000  40.0%     -    0s
+     0     0   84.00000    0   11  140.00000   84.00000  40.0%     -    0s
+     0     0   84.00000    0   11  140.00000   84.00000  40.0%     -    0s
+     0     0   85.00000    0    8  140.00000   85.00000  39.3%     -    0s
+     0     0   85.00000    0   10  140.00000   85.00000  39.3%     -    0s
+     0     0   85.00000    0   19  140.00000   85.00000  39.3%     -    0s
+     0     0   85.00000    0   21  140.00000   85.00000  39.3%     -    0s
+     0     0   85.00000    0   15  140.00000   85.00000  39.3%     -    0s
+     0     0   85.00000    0   10  140.00000   85.00000  39.3%     -    0s
+     0     2   85.00000    0    9  140.00000   85.00000  39.3%     -    0s
+* 1536   525              26     139.9999973  100.00000  28.6%   4.6    0s
+* 3618   601              28     139.9999967  100.00000  28.6%   5.3    0s
+H 5807   608                     139.9999920  120.00000  14.3%   5.2    0s
+
+Cutting planes:
+  Learned: 42
+  Gomory: 8
+  Cover: 154
+  MIR: 174
+  StrongCG: 1
+  Inf proof: 205
+  Network: 1
+  RLT: 23
+  Relax-and-lift: 2
+
+Explored 23230 nodes (123205 simplex iterations) in 0.53 seconds (0.62 work units)
+Thread count was 20 (of 20 available processors)
+
+Solution count 7: 140 140 140 ... 180
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 1.399999920282e+02, best bound 1.399999920282e+02, gap 0.0000%
+
+Wrote result file 'visualize/sample2.sol'
+

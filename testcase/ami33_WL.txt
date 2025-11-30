@@ -1,0 +1,85 @@
+num_of_hardblocks 33
+num_of_nets 43
+num_of_pads 4
+
+// hardblocks
+// name w h
+hbk1   413 220
+hbk2   112 321
+hbk3   214 222
+hbk4   511 323
+hbk5a  215 324
+hbk5b  517 325
+hbk5c  118 226
+hbk6   219 427
+hbk7   211 528
+hbk8a  312 229
+hbk8b  213 420
+hbk9a  114 321
+hbk9b  215 222
+hbk9c  316 323
+hbk9d  417 424
+hbk10a 518 525
+hbk10b 219 326
+hbk10c 410 227
+hbk11  111 328
+hbk12  212 229
+hbk13  513 320
+hbk14a 214 321
+hbk14b 515 322
+hbk14c 116 223
+hbk15a 217 424
+hbk15b 218 525
+hbk16  319 226
+hbk17a 210 427
+hbk17b 113 328
+hbk18  213 229
+hbk19  313 324
+hbk20  413 424
+hbk21  513 524
+
+// nets
+// name pins
+nDIR hbk9a hbk11 
+nC30 hbk8a hbk8b 
+nC34 hbk8a hbk8b hbk10a 
+nC36A hbk9a hbk9b
+nC74 hbk18 hbk19 
+nC307 hbk8a hbk21 
+n7 hbk11 hbk13 
+n22 hbk14a hbk14c 
+n25 hbk5b hbk13 hbk14a 
+n29 hbk14b hbk15b 
+n38 hbk15a hbk15b 
+n42 hbk14c hbk15a 
+n44 hbk14a hbk14b 
+n46 hbk2 hbk3 hbk9d hbk15a hbk17a hbk17b hbk19 
+n50 hbk13 hbk15a 
+n53 hbk13 hbk14c 
+n55 hbk5b hbk13 
+n88 hbk5b hbk9d hbk13 
+n93 hbk5a hbk5b 
+n109 hbk5a hbk10b 
+n114 hbk5a hbk10b hbk13 
+n116 hbk9d hbk10c hbk11 hbk12 
+n123 hbk9d hbk12 
+n126 hbk9d hbk10c hbk12 
+n198 hbk4 hbk18 
+n219 hbk6 hbk9a 
+n222 hbk8b hbk9a 
+n226 hbk6 hbk9a hbk9b
+n234 hbk8b hbk10a 
+n257 hbk6 hbk7 hbk8a 
+n273 hbk3 hbk19 hbk20 
+n280 hbk19 hbk20 
+n282 hbk18 hbk20 
+n284 hbk3 hbk20 
+n291 hbk2 hbk3
+n311 hbk8a hbk21 
+n327 hbk6 hbk7 
+n331 hbk7 hbk9b
+n371 hbk5c hbk11 
+n378 hbk1 hbk3
+n379 hbk1 hbk20 
+n391 hbk2 hbk4 
+n399 hbk1 hbk2 

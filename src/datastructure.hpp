@@ -1,5 +1,6 @@
 #ifndef DATASTRUCTURE_HPP
 #define DATASTRUCTURE_HPP
+
 #include <vector>
 #include <list>
 #include <unordered_map>
@@ -36,8 +37,5 @@ public:
     Pad* pad;
     vector<HardBlock*> hardblocks;
 };
-
-
-
 
 #endif
